@@ -1,1 +1,30 @@
 
+name: Build & Deploy
+on:
+  push:
+    branches: [master]
+     
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy app
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.SSH_USERNAME }}
+          passphrase: ${{ secrets.SERVER_PASSPHRASE }}
+          script: |
+            if [ ! -d "NazarSit" ]; then
+              mkdir -p NazarSit
+            fi
+            cd NazarSit
+            touch somefile.txt
+            if [ -d "Dev_lab" ]; then
+              cd Dev_lab
+              git pull
+            else
+              git clone git@github.com:kamaziks/Dev_lab.git
+            fi
+            echo 'Deployment successful to DigitalOcean!'
