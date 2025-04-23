@@ -19,7 +19,6 @@ jobs:
               mkdir -p NazarSit
             fi
             cd NazarSit
-            touch somefile.txt
             if [ -d "Dev_lab" ]; then
               cd Dev_lab
               git pull
